@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap");
+
+/* Global styling */
+
+* {
+  @apply font-rubik;
+}
+
+.section {
+  @apply max-w-7xl mx-auto px-2.5 sm:px-8 lg:px-12;
+}
+
+/* Active navlink styling */
+
+a.active {
+  @apply text-primaryColor2 font-medium underline underline-offset-4;
+}
+
+/* Slick slider dots */
+ul.slick-dots {
+  @apply bottom-4;
+}
+
+ul.slick-dots li.slick-active button::before {
+  @apply text-primaryColor1;
+}
+
+ul.slick-dots li button::before {
+  @apply text-primaryColor1 text-sm;
+}
