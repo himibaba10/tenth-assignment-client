@@ -6,7 +6,12 @@ import { NavLink } from "react-router-dom";
 const Header = () => {
   const navLinks = (
     <>
-      <NavLink to="/">Home</NavLink>
+      <NavLink
+        className="relative hover:text-primaryColor2 transition before:content-[''] before:block before:h-[2px] before:w-[0%] hover:before:w-[100%] before:transition-all before:absolute before:bottom-0 before:bg-primaryColor2"
+        to="/"
+      >
+        Home
+      </NavLink>
       <NavLink
         className="relative hover:text-primaryColor2 transition before:content-[''] before:block before:h-[2px] before:w-[0%] hover:before:w-[100%] before:transition-all before:absolute before:bottom-0 before:bg-primaryColor2"
         to="/add-product"

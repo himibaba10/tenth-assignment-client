@@ -1,6 +1,7 @@
 import { Rating } from "@smastrom/react-rating";
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 const ProductForm = ({ objective }) => {
   const [rating, setRating] = useState(0);
@@ -27,9 +28,9 @@ const ProductForm = ({ objective }) => {
         body: JSON.stringify(product),
       })
         .then((res) => res.json())
-        .then((data) => {
-          console.log("yes! Product added");
-          console.log(data);
+        .then(() => {
+          toast("New Product added!");
+          form.reset();
         })
         .catch((err) => {
           console.log(err.message);
@@ -111,6 +112,7 @@ const ProductForm = ({ objective }) => {
           value="Add product"
         />
       </form>
+      <ToastContainer />
     </div>
   );
 };
