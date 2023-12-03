@@ -1,29 +1,30 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
 import { updateProfile } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import { FaGoogle } from "react-icons/fa";
 
 const LoginForm = ({ objective }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { user, googleSignIn, setUser, SignInUser, signUpUser } =
     useContext(AuthContext);
 
   if (user) {
     return <Navigate to="/" />;
   }
-
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
     if (objective === "Login") {
-      console.log(email, password);
       SignInUser(email, password)
         .then((res) => {
           setUser(res.user);
+          navigate(location.state || "/");
         })
         .catch((err) => {
           console.log(err.message);
@@ -55,7 +56,7 @@ const LoginForm = ({ objective }) => {
     googleSignIn()
       .then((res) => {
         setUser(res.user);
-        console.log(res.user);
+        navigate(location.state || "/");
       })
       .catch((err) => {
         console.log(err.message);

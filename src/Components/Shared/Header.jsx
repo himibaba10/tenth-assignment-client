@@ -1,17 +1,18 @@
 "use client";
 import { Navbar, Carousel } from "keep-react";
 import logo from "../../assets/logo.png";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 
 const Header = () => {
   const { user, setUser, logOut } = useContext(AuthContext);
-
+  const navigate = useNavigate();
   const handleSignOut = () => {
     logOut()
       .then(() => {
         setUser(null);
+        navigate("/");
       })
       .catch((err) => {
         console.log(err.message);
