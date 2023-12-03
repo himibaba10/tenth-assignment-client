@@ -4,6 +4,8 @@ import Home from "../Pages/Home";
 import SingleBrand from "../Pages/SingleBrand";
 import AddProduct from "../Pages/AddProduct";
 import SingleProduct from "../Pages/SingleProduct";
+import Login from "../Pages/Auth/Login";
+import Register from "../Pages/Auth/Register";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
         loader: ({ params }) =>
           fetch(`http://localhost:5000/products/${params.id}`),
         element: <SingleProduct />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },

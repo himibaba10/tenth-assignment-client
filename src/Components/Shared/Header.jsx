@@ -1,9 +1,23 @@
 "use client";
-import { Navbar, Button, Carousel } from "keep-react";
+import { Navbar, Carousel } from "keep-react";
 import logo from "../../assets/logo.png";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../providers/AuthProvider";
 
 const Header = () => {
+  const { user, setUser, logOut } = useContext(AuthContext);
+
+  const handleSignOut = () => {
+    logOut()
+      .then(() => {
+        setUser(null);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
   const navLinks = (
     <>
       <NavLink
@@ -61,9 +75,29 @@ const Header = () => {
           </Navbar.Container>
 
           <Navbar.Container className="flex gap-2">
-            <Button className="bg-primaryColor1 hover:bg-primaryColor2 transition duration-300 shadow-xl px-10 text-white">
-              Login
-            </Button>
+            {user ? (
+              <div className="flex items-center gap-3">
+                <img
+                  className="w-8 rounded-full"
+                  src={user.photoURL || "https://i.imgur.com/WwXYofg.png"}
+                  alt=""
+                />
+                <h5>{user.displayName}</h5>
+                <button
+                  className="bg-primaryColor1 hover:bg-primaryColor2 transition duration-300 shadow-xl text-white px-7 py-3 rounded-md"
+                  onClick={handleSignOut}
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="bg-primaryColor1 hover:bg-primaryColor2 transition duration-300 shadow-xl text-white px-14 py-3 rounded-md"
+              >
+                Login
+              </Link>
+            )}
             <Navbar.Toggle />
           </Navbar.Container>
         </Navbar.Container>

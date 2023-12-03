@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="flex-1">
           <img className="w-32 mx-auto drop-shadow-2xl" src={logo} />
         </div>
-        <div className="flex-1 flex justify-end gap-3 text-3xl">
+        <div className="flex-1 flex justify-end gap-5 text-3xl">
           <FaFacebook />
           <FaTwitter />
           <FaLinkedin />
