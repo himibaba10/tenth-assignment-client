@@ -3,7 +3,7 @@ import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 import logo from "../../assets/logo.png";
 const Footer = () => {
   return (
-    <footer className="bg-primaryColor1 relative mt-auto">
+    <footer className="bg-primaryColor1 relative">
       <div className="w-full h-full bg-white absolute opacity-10"></div>
       <div className="section text-white flex justify-between items-center">
         <span className="flex-1">Copyright@TenthAssignment,2023</span>

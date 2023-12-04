@@ -1,22 +1,45 @@
 import { Rating } from "@smastrom/react-rating";
+import { useContext } from "react";
 import { useLoaderData } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProvider";
+import { ToastContainer, toast } from "react-toastify";
 
 const SingleProduct = () => {
   const singleProduct = useLoaderData();
   const { name, type, price, description, image, rating } = singleProduct;
+  const { user } = useContext(AuthContext);
 
   const handleAddToCart = (product) => {
-    console.log(product);
+    // eslint-disable-next-line no-unused-vars
+    const { _id, ...rest } = product;
+    const addedProduct = { ...rest, email: user.email };
+    console.log(addedProduct);
+
+    fetch("http://localhost:5000/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(addedProduct),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.acknowledged) {
+          toast("Product added succesfully!");
+        }
+      })
+      .catch((err) => console.log(err.message));
   };
 
   return (
     <div
       className={`flex-1 py-10 w-full bg-gradient-to-r from-primaryColor2 from-30% to-white to-[0%]`}
     >
-      <div className="flex section">
+      <div className="flex section gap-10">
         <div className="flex-1">
           <img
-            className="ml-20 h-[500px] object-contain"
+            className="h-[500px] object-contain"
             src={image}
             alt={`Image of ${name}`}
           />
@@ -38,6 +61,7 @@ const SingleProduct = () => {
           </button>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

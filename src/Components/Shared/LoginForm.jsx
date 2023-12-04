@@ -3,17 +3,16 @@ import { useContext } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
 import { updateProfile } from "firebase/auth";
-import { ToastContainer, toast } from "react-toastify";
 import { FaGoogle } from "react-icons/fa";
 
 const LoginForm = ({ objective }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, googleSignIn, setUser, SignInUser, signUpUser } =
+  const { user, googleSignIn, setUser, SignInUser, signUpUser, setLoading } =
     useContext(AuthContext);
 
   if (user) {
-    return <Navigate to="/" />;
+    return <Navigate to={`${location.state || "/"}`} />;
   }
   const handleForm = (e) => {
     e.preventDefault();
@@ -24,6 +23,7 @@ const LoginForm = ({ objective }) => {
       SignInUser(email, password)
         .then((res) => {
           setUser(res.user);
+          setLoading(false);
           navigate(location.state || "/");
         })
         .catch((err) => {
@@ -40,7 +40,7 @@ const LoginForm = ({ objective }) => {
             .then(() => {
               const newUser = { ...res.user, displayName: name };
               setUser(newUser);
-              toast("User created succesfully!");
+              setLoading(false);
             })
             .catch((err) => {
               console.log(err.message);
@@ -129,7 +129,6 @@ const LoginForm = ({ objective }) => {
           </div>
         </form>
       </div>
-      <ToastContainer />
     </div>
   );
 };

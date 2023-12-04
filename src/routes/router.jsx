@@ -7,15 +7,26 @@ import SingleProduct from "../Pages/SingleProduct";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import PrivateRoute from "./PrivateRoute";
+import NotFound from "../Pages/NotFound";
+import Cart from "../Pages/Cart";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <NotFound />,
     children: [
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/cart",
+        element: (
+          <PrivateRoute>
+            <Cart />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/add-product",
@@ -35,7 +46,11 @@ const router = createBrowserRouter([
         path: "/products/:id",
         loader: ({ params }) =>
           fetch(`http://localhost:5000/products/${params.id}`),
-        element: <SingleProduct />,
+        element: (
+          <PrivateRoute>
+            <SingleProduct />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",
