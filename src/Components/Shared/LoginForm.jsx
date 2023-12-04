@@ -4,8 +4,10 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
 import { updateProfile } from "firebase/auth";
 import { FaGoogle } from "react-icons/fa";
+import { useState } from "react";
 
 const LoginForm = ({ objective }) => {
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const { user, googleSignIn, setUser, SignInUser, signUpUser, setLoading } =
@@ -16,6 +18,7 @@ const LoginForm = ({ objective }) => {
   }
   const handleForm = (e) => {
     e.preventDefault();
+    setError("");
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
@@ -26,11 +29,18 @@ const LoginForm = ({ objective }) => {
           setLoading(false);
           navigate(location.state || "/");
         })
-        .catch((err) => {
-          console.log(err.message);
+        .catch(() => {
+          setError("Email and password does not match");
         });
     } else {
       const name = form.name.value;
+
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9\s]).{6,}$/.test(password)) {
+        setError(
+          "Password should be at least 6 character long, should contain at least on uppercase and at least a special character"
+        );
+        return;
+      }
 
       signUpUser(email, password)
         .then((res) => {
@@ -127,6 +137,7 @@ const LoginForm = ({ objective }) => {
               Google
             </button>
           </div>
+          {error && <p>{error}</p>}
         </form>
       </div>
     </div>

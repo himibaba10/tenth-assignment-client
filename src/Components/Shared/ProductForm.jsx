@@ -3,8 +3,20 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
-const ProductForm = ({ objective }) => {
+const ProductForm = ({ objective, product }) => {
   const [rating, setRating] = useState(0);
+
+  const {
+    _id,
+    name,
+    brand,
+    type,
+    price,
+    image,
+    rating: rate,
+    description,
+  } = product;
+
   const handleAddProduct = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -15,9 +27,7 @@ const ProductForm = ({ objective }) => {
     const price = form.price?.value;
     const image = form.imageURL?.value;
     const description = form.description?.value;
-    const product = { name, brand, type, price, image, rating, description };
-
-    console.log(product);
+    const product = { name, brand, type, price, image, rate, description };
 
     if (objective === "addProduct") {
       fetch("http://localhost:5000/products", {
@@ -35,6 +45,21 @@ const ProductForm = ({ objective }) => {
         .catch((err) => {
           console.log(err.message);
         });
+    } else {
+      fetch(`http://localhost:5000/product/update/${_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.modifiedCount > 0) {
+            toast("Product updated!");
+          }
+        })
+        .catch((err) => console.log(err.message));
     }
   };
 
@@ -48,13 +73,14 @@ const ProductForm = ({ objective }) => {
           className="p-3 rounded placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1"
           type="text"
           name="name"
-          defaultValue={""}
+          defaultValue={name || ""}
           placeholder="Product Name"
           required
         />
         <select
           className="p-3 rounded text-primaryColor2 focus:text-primaryColor1 focus:outline-primaryColor1"
           name="brand"
+          defaultValue={brand || ""}
           required
         >
           <option value="">Select a brand</option>
@@ -68,6 +94,7 @@ const ProductForm = ({ objective }) => {
         <select
           className="p-3 rounded text-primaryColor2 focus:text-primaryColor1 focus:outline-primaryColor1"
           name="type"
+          defaultValue={type || ""}
           required
         >
           <option value="">Select a Type</option>
@@ -79,7 +106,7 @@ const ProductForm = ({ objective }) => {
           className="p-3 rounded placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1"
           type="text"
           name="price"
-          defaultValue={""}
+          defaultValue={price || ""}
           placeholder="Product Price in Dollar"
           required
         />
@@ -87,7 +114,7 @@ const ProductForm = ({ objective }) => {
           className="p-3 rounded placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1"
           type="text"
           name="imageURL"
-          defaultValue={""}
+          defaultValue={image || ""}
           placeholder="Product Image URL"
           required
         />
@@ -95,14 +122,14 @@ const ProductForm = ({ objective }) => {
           <span className="text-primaryColor1">Rating: </span>
           <Rating
             style={{ maxWidth: 180 }}
-            value={rating}
+            value={rate || rating}
             onChange={setRating}
           />
         </div>
         <textarea
           className="p-3 rounded placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1 col-span-2"
           name="description"
-          defaultValue={""}
+          defaultValue={description || ""}
           rows="5"
           placeholder="Write short description"
         ></textarea>
@@ -119,6 +146,7 @@ const ProductForm = ({ objective }) => {
 
 ProductForm.propTypes = {
   objective: PropTypes.string,
+  product: PropTypes.object,
 };
 
 export default ProductForm;

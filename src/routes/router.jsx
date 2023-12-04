@@ -9,6 +9,7 @@ import Register from "../Pages/Auth/Register";
 import PrivateRoute from "./PrivateRoute";
 import NotFound from "../Pages/NotFound";
 import Cart from "../Pages/Cart";
+import UpdateProduct from "../Pages/UpdateProduct";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,16 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/products/update/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/products/update/${params.id}`),
+        element: (
+          <PrivateRoute>
+            <UpdateProduct />
+          </PrivateRoute>
+        ),
       },
     ],
   },
