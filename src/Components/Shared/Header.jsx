@@ -44,7 +44,7 @@ const Header = () => {
     </>
   );
   return (
-    <header className={`${darkTheme && "bg-blue-950"}`}>
+    <header className={`shadow-md ${darkTheme && "bg-blue-950"}`}>
       <div className="bg-primaryColor1">
         <div className="section text-center text-white text-sm sm:text-xl">
           <Carousel
