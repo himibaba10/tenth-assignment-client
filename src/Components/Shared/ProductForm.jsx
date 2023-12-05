@@ -3,19 +3,10 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
-const ProductForm = ({ objective, product }) => {
+const ProductForm = ({ objective, product = {} }) => {
   const [rating, setRating] = useState(0);
 
-  const {
-    _id,
-    name,
-    brand,
-    type,
-    price,
-    image,
-    rating: rate,
-    description,
-  } = product;
+  const { _id, name, brand, type, price, image, description } = product;
 
   const handleAddProduct = (e) => {
     e.preventDefault();
@@ -27,10 +18,10 @@ const ProductForm = ({ objective, product }) => {
     const price = form.price?.value;
     const image = form.imageURL?.value;
     const description = form.description?.value;
-    const product = { name, brand, type, price, image, rate, description };
+    const product = { name, brand, type, price, image, rating, description };
 
     if (objective === "addProduct") {
-      fetch("http://localhost:5000/products", {
+      fetch("https://tenth-assignment-server-xi.vercel.app/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,13 +37,16 @@ const ProductForm = ({ objective, product }) => {
           console.log(err.message);
         });
     } else {
-      fetch(`http://localhost:5000/product/update/${_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(product),
-      })
+      fetch(
+        `https://tenth-assignment-server-xi.vercel.app/product/update/${_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(product),
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.modifiedCount > 0) {
@@ -67,10 +61,10 @@ const ProductForm = ({ objective, product }) => {
     <div className="section mt-10">
       <form
         onSubmit={handleAddProduct}
-        className="grid grid-cols-1 sm:grid-cols-2 gap-5"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-5"
       >
         <input
-          className="p-3 rounded placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1"
+          className="p-3 col-span-2 sm:col-span-1 rounded placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1"
           type="text"
           name="name"
           defaultValue={name || ""}
@@ -78,7 +72,7 @@ const ProductForm = ({ objective, product }) => {
           required
         />
         <select
-          className="p-3 rounded text-primaryColor2 focus:text-primaryColor1 focus:outline-primaryColor1"
+          className="p-3 rounded col-span-2 sm:col-span-1 text-primaryColor2 focus:text-primaryColor1 focus:outline-primaryColor1"
           name="brand"
           defaultValue={brand || ""}
           required
@@ -92,7 +86,7 @@ const ProductForm = ({ objective, product }) => {
           <option value="Vivo">Vivo</option>
         </select>
         <select
-          className="p-3 rounded text-primaryColor2 focus:text-primaryColor1 focus:outline-primaryColor1"
+          className="p-3 rounded col-span-2 sm:col-span-1 text-primaryColor2 focus:text-primaryColor1 focus:outline-primaryColor1"
           name="type"
           defaultValue={type || ""}
           required
@@ -103,7 +97,7 @@ const ProductForm = ({ objective, product }) => {
           <option value="Watch">Watch</option>
         </select>
         <input
-          className="p-3 rounded placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1"
+          className="p-3 rounded col-span-2 sm:col-span-1 placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1"
           type="text"
           name="price"
           defaultValue={price || ""}
@@ -111,23 +105,23 @@ const ProductForm = ({ objective, product }) => {
           required
         />
         <input
-          className="p-3 rounded placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1"
+          className="p-3 rounded col-span-2 sm:col-span-1 placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1"
           type="text"
           name="imageURL"
           defaultValue={image || ""}
           placeholder="Product Image URL"
           required
         />
-        <div className="flex items-center gap-1">
+        <div className="flex col-span-2 sm:col-span-1 items-center gap-1">
           <span className="text-primaryColor1">Rating: </span>
           <Rating
             style={{ maxWidth: 180 }}
-            value={rate || rating}
+            value={rating}
             onChange={setRating}
           />
         </div>
         <textarea
-          className="p-3 rounded placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1 col-span-2"
+          className="p-3 rounded placeholder:text-primaryColor2 text-primaryColor1 focus:outline-primaryColor1 sm:col-span-2"
           name="description"
           defaultValue={description || ""}
           rows="5"
@@ -136,7 +130,9 @@ const ProductForm = ({ objective, product }) => {
         <input
           className="col-span-2 bg-primaryColor2 hover:bg-[rgb(90,205,99)] transition duration-300 py-3 rounded shadow-md text-white font-medium text-lg cursor-pointer"
           type="submit"
-          value="Add product"
+          value={`${
+            objective === "addProduct" ? "Add product" : "Update product"
+          }`}
         />
       </form>
       <ToastContainer />

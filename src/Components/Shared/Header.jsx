@@ -4,9 +4,11 @@ import logo from "../../assets/logo.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
+import { ThemeContext } from "../../providers/ThemeProvider";
 
 const Header = () => {
   const { user, setUser, logOut } = useContext(AuthContext);
+  const { darkTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const handleSignOut = () => {
     logOut()
@@ -42,9 +44,9 @@ const Header = () => {
     </>
   );
   return (
-    <header>
+    <header className={`${darkTheme && "bg-blue-950"}`}>
       <div className="bg-primaryColor1">
-        <div className="section text-center text-white text-xl">
+        <div className="section text-center text-white text-sm sm:text-xl">
           <Carousel
             slideInterval={5000}
             showControls={true}
@@ -55,11 +57,15 @@ const Header = () => {
           </Carousel>
         </div>
       </div>
-      <Navbar className="section">
-        <Navbar.Container className="flex items-center justify-between">
-          <Navbar.Container className="flex items-center">
+      <Navbar className={`section ${darkTheme && "bg-blue-950"}`}>
+        <Navbar.Container
+          className={`flex flex-col sm:flex-row items-center justify-between ${
+            darkTheme && "text-white"
+          }`}
+        >
+          <Navbar.Container className="flex sm:items-center self-start">
             <Navbar.Brand>
-              <img src={logo} className="w-28" />
+              <img src={logo} className="w-20 sm:w-28 -mt-4 sm:mt-0" />
             </Navbar.Brand>
             <Navbar.Divider></Navbar.Divider>
             <Navbar.Container
@@ -75,11 +81,11 @@ const Header = () => {
             </Navbar.Collapse>
           </Navbar.Container>
 
-          <Navbar.Container className="flex gap-2">
+          <Navbar.Container className="flex justify-between gap-2 w-full sm:w-auto">
             {user ? (
               <div className="flex items-center gap-3">
                 <img
-                  className="w-8 rounded-full"
+                  className={`w-8 rounded-full ${darkTheme && "invert"}`}
                   src={user.photoURL || "https://i.imgur.com/WwXYofg.png"}
                   alt=""
                 />
@@ -99,7 +105,7 @@ const Header = () => {
                 Login
               </Link>
             )}
-            <Navbar.Toggle />
+            <Navbar.Toggle className="bg-white self-center p-2 rounded" />
           </Navbar.Container>
         </Navbar.Container>
       </Navbar>

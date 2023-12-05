@@ -6,11 +6,14 @@ import router from "./routes/router.jsx";
 import "@smastrom/react-rating/style.css";
 import "react-toastify/dist/ReactToastify.css";
 import AuthProvider from "./providers/AuthProvider.jsx";
+import ThemeProvider from "./providers/ThemeProvider.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );

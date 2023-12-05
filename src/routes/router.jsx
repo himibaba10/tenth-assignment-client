@@ -40,13 +40,17 @@ const router = createBrowserRouter([
       {
         path: "/brands/:name",
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/brands/${params.name}`),
+          fetch(
+            `https://tenth-assignment-server-xi.vercel.app/brands/${params.name}`
+          ),
         element: <SingleBrand />,
       },
       {
         path: "/products/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/products/${params.id}`),
+          fetch(
+            `https://tenth-assignment-server-xi.vercel.app/products/${params.id}`
+          ),
         element: (
           <PrivateRoute>
             <SingleProduct />
@@ -64,7 +68,9 @@ const router = createBrowserRouter([
       {
         path: "/products/update/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/products/update/${params.id}`),
+          fetch(
+            `https://tenth-assignment-server-xi.vercel.app/products/update/${params.id}`
+          ),
         element: (
           <PrivateRoute>
             <UpdateProduct />
